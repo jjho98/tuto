@@ -56,6 +56,7 @@ Assignment
 Comment
 ===
 | 필드 | 타입 | 설명|
+|:---:|:---:|:---:|
 | 'assignment' | 'ObjectId' | 대응되는 과제 id |
 | 'Author' | 'ObjectId' | 유저 id |
 | 'subComments' | '[SubComment]' | 대댓글 객체 배열 |
@@ -64,5 +65,6 @@ Comment
 SubComment
 ===
 | 필드 | 타입 | 설명|
+|:---:|:---:|:---:|
 | 'Author' | 'ObjectId' | 유저 id |
 | 'Comment' | 'ObjectId' | 댓글 id |
