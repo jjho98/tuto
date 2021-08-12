@@ -58,7 +58,7 @@ export const login = async (req, res, next) => {
 
     const isCorrect = await bcrypt.compare(password, user.password);
     // 비밀번호가 일치하지 않을 시
-    if (isCorrect) {
+    if (!isCorrect) {
       return res.status(401).json({ message: '비밀번호가 일치하지 않습니다' });
     }
 
