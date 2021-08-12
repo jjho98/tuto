@@ -1,6 +1,6 @@
 import User from '../../models/user';
 
-export const read = async (email) => {
+export const readByEmail = async (email) => {
   return await User.findOne({ email });
 };
 
