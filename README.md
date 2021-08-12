@@ -41,7 +41,7 @@ User
 |:---:|:---:|:---:|
 | 'email' | 'String' | 이메일 |
 | 'password' | 'String' | 패스워드 |
-| 'nickname' | 'String' | 닉네임 | 
+| 'nickname' | 'String' | 닉네임(1글자 ~ 10글자) | 
 | 'thumbnail' | 'String' | 유저 썸네일 |
 | 'message' | 'String' | 상태 메시지 |
 | 'takingTutorials' | '[ObjectId]' | 듣고 있는 튜토리얼들 |
