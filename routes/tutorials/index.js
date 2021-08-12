@@ -3,10 +3,10 @@ import * as tutorialsController from './controller';
 
 const tutorials = new Router();
 
-tutorials.get('/', (req, res, next) => {
-  res.json({ message: 'tutorial' });
-});
+tutorials.get('/:category', tutorialsController.list);
 
-tutorials.post('/', (req, res, next) => {});
+tutorials.get('/', (req, res, next) => {
+  return res.json('a');
+});
 
 export default tutorials;
