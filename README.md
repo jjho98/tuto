@@ -46,6 +46,7 @@ User
 | 'message' | 'String' | 상태 메시지 |
 | 'takingTutorials' | '[ObjectId]' | 듣고 있는 튜토리얼들 |
 | 'takenTutorials' | '[ObjectId]' | 완료한 튜토리얼들 |
+| 'uploadedTutorials' | '[ObjectId]' | 업로드한 튜토리얼들 |
 | 'recommendation' | 'String' | 추천 카테고리 |
 <br/>
 
