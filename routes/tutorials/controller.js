@@ -5,7 +5,7 @@ export const list = async (req, res, next) => {
   try {
     const { category } = req.params;
     // params로 받은 카테고리가 존재하지 않으면 잘못된 요청
-    const doesExist = await Category.exists({ name: category });
+    const doesExist = await Category.exists({ engName: category });
     if (!doesExist) {
       return res
         .status(400)
