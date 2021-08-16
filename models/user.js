@@ -2,7 +2,7 @@ import mongoose, { Schema } from 'mongoose';
 import jwt from 'jsonwebtoken';
 const { ObjectId } = mongoose.Types;
 
-const userSchema = new Schema(
+export const userSchema = new Schema(
   {
     email: String,
     password: String,

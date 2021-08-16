@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 const { ObjectId } = mongoose.Types;
 import { lectureSchema } from './lecture';
+import { userSchema } from './user';
 
 const tutorialSchema = new Schema(
   {
@@ -10,7 +11,7 @@ const tutorialSchema = new Schema(
     category: String,
     lectures: [lectureSchema],
     thumbnail: String,
-    tutor: ObjectId,
+    tutor: userSchema,
     tutees: [ObjectId],
   },
   {

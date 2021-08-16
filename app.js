@@ -8,8 +8,6 @@ const morgan = require('morgan');
 import mongoose from 'mongoose';
 import logger from './logger';
 
-import Category from './models/category';
-
 mongoose
   .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
@@ -35,11 +33,10 @@ mongoose
 
 // const indexRouter = require('./routes/index');
 // const usersRouter = require('./routes/users');
-import tutorials from './routes/tutorials';
-import categories from './routes/categories';
-import auth from './routes/auth';
+import routes from './routes';
 
 const app = express();
+app.use('/api', routes);
 
 if (process.env.ENV == 'development') {
   app.use(morgan('dev'));
@@ -54,9 +51,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 // 라우터 설정
 // app.use('/', indexRouter);
 // app.use('/users', usersRouter);
-app.use('/tutorials', tutorials);
-app.use('/categories', categories);
-app.use('/auth', auth);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
