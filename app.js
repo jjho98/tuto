@@ -7,6 +7,8 @@ const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 import mongoose from 'mongoose';
 import logger from './logger';
+import routes from './routes';
+import jwtVerify from './routes/middlewares/jwtVerify';
 
 mongoose
   .connect(process.env.MONGO_URI, {
@@ -31,11 +33,9 @@ mongoose
     console.error(e);
   });
 
-// const indexRouter = require('./routes/index');
-// const usersRouter = require('./routes/users');
-import routes from './routes';
-
 const app = express();
+
+app.use(jwtVerify);
 app.use('/api', routes);
 
 if (process.env.ENV == 'development') {
@@ -47,10 +47,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-// 라우터 설정
-// app.use('/', indexRouter);
-// app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

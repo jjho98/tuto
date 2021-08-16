@@ -1,4 +1,5 @@
 import * as userController from '../users/controller';
+import * as jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
 // 회원가입

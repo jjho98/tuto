@@ -23,6 +23,7 @@ userSchema.methods.issueToken = function () {
     {
       _id: this._id,
       nickname: this.nickname,
+      thumbnail: this.thumbnail,
     },
     process.env.JWT_KEY,
     {
