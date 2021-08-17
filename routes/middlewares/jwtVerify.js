@@ -11,7 +11,7 @@ const jwtVerify = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_KEY);
     res.locals.user = {
-      id: decoded._id,
+      id: decoded.id,
     };
     // jwt 만료 기한이 3일 이하면 재발행
   } catch (err) {
