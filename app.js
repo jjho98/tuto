@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
@@ -8,16 +6,22 @@ const morgan = require('morgan');
 import logger from './logger';
 import routes from './routes';
 import jwtVerify from './routes/middlewares/jwtVerify';
+import { sequelize } from './models';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 // db connect
-const sequelize = require('./models').sequelize;
-sequelize.sync();
-console.log('mysql db connected');
+sequelize
+  .sync({ force: false })
+  .then(() => {
+    console.log('데이터베이스 연결 성공');
+  })
+  .catch((err) => {
+    console.error(err);
+  });
 
 const app = express();
-
-app.use(jwtVerify);
-app.use('/api', routes);
 
 if (process.env.NODE_ENV == 'development') {
   app.use(morgan('dev'));
@@ -29,6 +33,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(jwtVerify);
+app.use('/api', routes);
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
@@ -36,7 +43,11 @@ app.use(function (req, res, next) {
 
 // error handler
 app.use(function (err, req, res, next) {
-  logger.error(err.message);
+  if (process.env.NODE_ENV === 'development') {
+    console.error(err);
+  } else {
+    logger.error(err.message);
+  }
 
   const message =
     process.env.NODE_ENV === 'development'

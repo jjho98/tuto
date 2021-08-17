@@ -1,8 +1,8 @@
-import Category from '../../models/category';
+import { category } from '../../models';
 
 export const list = async (req, res, next) => {
   try {
-    const result = await Category.find({});
+    const result = await category.findAll();
     res.status(200).json(result);
   } catch (err) {
     next(err);

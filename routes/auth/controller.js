@@ -1,6 +1,7 @@
 import * as userController from '../users/controller';
 import * as jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import issueToken from '../../lib/issueToken';
 
 // 회원가입
 // 토큰 발행
@@ -8,11 +9,13 @@ export const join = async (req, res, next) => {
   try {
     // 필드별 필요한 제약 추가하기
     // 이메일, 패스워드, 닉네임 중에 작성 안 된 게 있을 시
-    const { email, password, nickname } = req.body;
-    if (!email || !password || !nickname) {
+    const { email, password, nickname, thumbnail } = req.body;
+    if (!email || !password || !nickname || !thumbnail) {
       return res
         .status(400)
-        .json({ message: '이메일, 비밀번호, 닉네임은 필수 항목입니다' });
+        .json({
+          message: '이메일, 비밀번호, 닉네임, 썸네일은 필수 항목입니다',
+        });
     }
 
     // nickname 길이 안 맞을 시
@@ -27,7 +30,7 @@ export const join = async (req, res, next) => {
     const user = await userController.create(req.body);
 
     // 토큰 발행
-    const token = await user.issueToken();
+    const token = await issueToken(user.id);
     res.cookie('access_token', token, {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       httpOnly: true,
@@ -65,7 +68,7 @@ export const login = async (req, res, next) => {
 
     // 유저 데이터 일치 시
     // 토큰 발행
-    const token = await user.issueToken();
+    const token = await issueToken(user.id);
     res.cookie('access_token', token, {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       httpOnly: true,
