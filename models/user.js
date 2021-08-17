@@ -1,37 +1,67 @@
-import mongoose, { Schema } from 'mongoose';
-import jwt from 'jsonwebtoken';
-const { ObjectId } = mongoose.Types;
-
-export const userSchema = new Schema(
-  {
-    email: String,
-    password: String,
-    nickname: String,
-    thumbnail: String,
-    message: String,
-    takingTutorials: [ObjectId],
-    takenTutorials: [ObjectId],
-    recommendation: String,
-  },
-  {
+const Sequelize = require('sequelize');
+module.exports = function(sequelize, DataTypes) {
+  return sequelize.define('user', {
+    id: {
+      autoIncrement: true,
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true
+    },
+    email: {
+      type: DataTypes.STRING(45),
+      allowNull: false,
+      unique: "email_UNIQUE"
+    },
+    password: {
+      type: DataTypes.STRING(45),
+      allowNull: false
+    },
+    nickname: {
+      type: DataTypes.STRING(10),
+      allowNull: false,
+      unique: "nickname_UNIQUE"
+    },
+    thumbnail: {
+      type: DataTypes.STRING(500),
+      allowNull: false
+    },
+    message: {
+      type: DataTypes.STRING(500),
+      allowNull: true
+    },
+    recommendation: {
+      type: DataTypes.STRING(45),
+      allowNull: true
+    }
+  }, {
+    sequelize,
+    tableName: 'user',
     timestamps: true,
-  },
-);
-
-userSchema.methods.issueToken = function () {
-  const token = jwt.sign(
-    {
-      _id: this._id,
-      nickname: this.nickname,
-      thumbnail: this.thumbnail,
-    },
-    process.env.JWT_KEY,
-    {
-      expiresIn: '7d',
-    },
-  );
-  return token;
+    indexes: [
+      {
+        name: "PRIMARY",
+        unique: true,
+        using: "BTREE",
+        fields: [
+          { name: "id" },
+        ]
+      },
+      {
+        name: "email_UNIQUE",
+        unique: true,
+        using: "BTREE",
+        fields: [
+          { name: "email" },
+        ]
+      },
+      {
+        name: "nickname_UNIQUE",
+        unique: true,
+        using: "BTREE",
+        fields: [
+          { name: "nickname" },
+        ]
+      },
+    ]
+  });
 };
-
-const User = mongoose.model('User', userSchema);
-export default User;

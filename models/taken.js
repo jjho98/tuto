@@ -1,31 +1,14 @@
 const Sequelize = require('sequelize');
 module.exports = function (sequelize, DataTypes) {
   return sequelize.define(
-    'tutorial',
+    'taken',
     {
-      id: {
-        autoIncrement: true,
+      tutorial_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         primaryKey: true,
-      },
-      title: {
-        type: DataTypes.STRING(100),
-        allowNull: false,
-      },
-      content: {
-        type: DataTypes.STRING(500),
-        allowNull: false,
-      },
-      thumbnail: {
-        type: DataTypes.STRING(500),
-        allowNull: true,
-      },
-      category_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
         references: {
-          model: 'category',
+          model: 'tutorial',
           key: 'id',
         },
       },
@@ -33,6 +16,7 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.INTEGER,
         allowNull: false,
         onDelete: 'CASCADE',
+        primaryKey: true,
         references: {
           model: 'user',
           key: 'id',
@@ -41,22 +25,17 @@ module.exports = function (sequelize, DataTypes) {
     },
     {
       sequelize,
-      tableName: 'tutorial',
+      tableName: 'taken',
       timestamps: true,
       indexes: [
         {
           name: 'PRIMARY',
           unique: true,
           using: 'BTREE',
-          fields: [{ name: 'id' }],
+          fields: [{ name: 'tutorial_id' }, { name: 'user_id' }],
         },
         {
-          name: 'fk_Tutorial_Category',
-          using: 'BTREE',
-          fields: [{ name: 'category_id' }],
-        },
-        {
-          name: 'fk_Tutorial_User1',
+          name: 'fk_Tutorial_has_User_User2',
           using: 'BTREE',
           fields: [{ name: 'user_id' }],
         },

@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 module.exports = function (sequelize, DataTypes) {
   return sequelize.define(
-    'tutorial',
+    'comment',
     {
       id: {
         autoIncrement: true,
@@ -9,23 +9,16 @@ module.exports = function (sequelize, DataTypes) {
         allowNull: false,
         primaryKey: true,
       },
-      title: {
+      content: {
         type: DataTypes.STRING(100),
         allowNull: false,
       },
-      content: {
-        type: DataTypes.STRING(500),
-        allowNull: false,
-      },
-      thumbnail: {
-        type: DataTypes.STRING(500),
-        allowNull: true,
-      },
-      category_id: {
+      portfolio_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        onDelete: 'CASCADE',
         references: {
-          model: 'category',
+          model: 'portfolio',
           key: 'id',
         },
       },
@@ -41,7 +34,7 @@ module.exports = function (sequelize, DataTypes) {
     },
     {
       sequelize,
-      tableName: 'tutorial',
+      tableName: 'comment',
       timestamps: true,
       indexes: [
         {
@@ -51,12 +44,12 @@ module.exports = function (sequelize, DataTypes) {
           fields: [{ name: 'id' }],
         },
         {
-          name: 'fk_Tutorial_Category',
+          name: 'fk_Comment_Portfolio1',
           using: 'BTREE',
-          fields: [{ name: 'category_id' }],
+          fields: [{ name: 'portfolio_id' }],
         },
         {
-          name: 'fk_Tutorial_User1',
+          name: 'fk_Comment_User1',
           using: 'BTREE',
           fields: [{ name: 'user_id' }],
         },

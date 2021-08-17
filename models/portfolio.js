@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 module.exports = function (sequelize, DataTypes) {
   return sequelize.define(
-    'tutorial',
+    'portfolio',
     {
       id: {
         autoIncrement: true,
@@ -9,23 +9,15 @@ module.exports = function (sequelize, DataTypes) {
         allowNull: false,
         primaryKey: true,
       },
-      title: {
-        type: DataTypes.STRING(100),
-        allowNull: false,
-      },
       content: {
-        type: DataTypes.STRING(500),
-        allowNull: false,
-      },
-      thumbnail: {
-        type: DataTypes.STRING(500),
+        type: DataTypes.STRING(100),
         allowNull: true,
       },
-      category_id: {
+      lecture_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-          model: 'category',
+          model: 'lecture',
           key: 'id',
         },
       },
@@ -41,7 +33,7 @@ module.exports = function (sequelize, DataTypes) {
     },
     {
       sequelize,
-      tableName: 'tutorial',
+      tableName: 'portfolio',
       timestamps: true,
       indexes: [
         {
@@ -51,12 +43,12 @@ module.exports = function (sequelize, DataTypes) {
           fields: [{ name: 'id' }],
         },
         {
-          name: 'fk_Tutorial_Category',
+          name: 'fk_Portfolio_Lecture1',
           using: 'BTREE',
-          fields: [{ name: 'category_id' }],
+          fields: [{ name: 'lecture_id' }],
         },
         {
-          name: 'fk_Tutorial_User1',
+          name: 'fk_Portfolio_User1',
           using: 'BTREE',
           fields: [{ name: 'user_id' }],
         },

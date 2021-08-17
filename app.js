@@ -5,40 +5,21 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
-import mongoose from 'mongoose';
 import logger from './logger';
 import routes from './routes';
 import jwtVerify from './routes/middlewares/jwtVerify';
 
-mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useFindAndModify: false,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log('connected to mongoDB');
-    // category mock data
-    // const categories = [...new Array(40).keys()].map((id) => ({
-    //   name: `cateogry${id}`,
-    // }));
-    // Category.insertMany(categories, (err, docs) => {
-    //   if (err) {
-    //     return console.error(err);
-    //   }
-    //   console.log(docs);
-    // });
-  })
-  .catch((e) => {
-    console.error(e);
-  });
+// db connect
+const sequelize = require('./models').sequelize;
+sequelize.sync();
+console.log('mysql db connected');
 
 const app = express();
 
 app.use(jwtVerify);
 app.use('/api', routes);
 
-if (process.env.ENV == 'development') {
+if (process.env.NODE_ENV == 'development') {
   app.use(morgan('dev'));
 } else {
   app.use(morgan('combined'));
@@ -58,7 +39,9 @@ app.use(function (err, req, res, next) {
   logger.error(err.message);
 
   const message =
-    process.env.ENV === 'development' ? err : { message: '서버 에러 발생' };
+    process.env.NODE_ENV === 'development'
+      ? err
+      : { message: '서버 에러 발생' };
   // render the error page
   res.status(err.status || 500);
   res.json(message);

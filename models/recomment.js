@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 module.exports = function (sequelize, DataTypes) {
   return sequelize.define(
-    'tutorial',
+    'recomment',
     {
       id: {
         autoIncrement: true,
@@ -9,23 +9,16 @@ module.exports = function (sequelize, DataTypes) {
         allowNull: false,
         primaryKey: true,
       },
-      title: {
-        type: DataTypes.STRING(100),
-        allowNull: false,
-      },
       content: {
-        type: DataTypes.STRING(500),
+        type: DataTypes.STRING(200),
         allowNull: false,
       },
-      thumbnail: {
-        type: DataTypes.STRING(500),
-        allowNull: true,
-      },
-      category_id: {
+      comment_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        onDelete: 'CASCADE',
         references: {
-          model: 'category',
+          model: 'comment',
           key: 'id',
         },
       },
@@ -41,7 +34,7 @@ module.exports = function (sequelize, DataTypes) {
     },
     {
       sequelize,
-      tableName: 'tutorial',
+      tableName: 'recomment',
       timestamps: true,
       indexes: [
         {
@@ -51,12 +44,12 @@ module.exports = function (sequelize, DataTypes) {
           fields: [{ name: 'id' }],
         },
         {
-          name: 'fk_Tutorial_Category',
+          name: 'fk_Recomment_Comment1',
           using: 'BTREE',
-          fields: [{ name: 'category_id' }],
+          fields: [{ name: 'comment_id' }],
         },
         {
-          name: 'fk_Tutorial_User1',
+          name: 'fk_Recomment_User1',
           using: 'BTREE',
           fields: [{ name: 'user_id' }],
         },

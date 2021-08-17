@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 module.exports = function (sequelize, DataTypes) {
   return sequelize.define(
-    'tutorial',
+    'portfolioImage',
     {
       id: {
         autoIncrement: true,
@@ -9,39 +9,23 @@ module.exports = function (sequelize, DataTypes) {
         allowNull: false,
         primaryKey: true,
       },
-      title: {
-        type: DataTypes.STRING(100),
+      uri: {
+        type: DataTypes.STRING(200),
         allowNull: false,
       },
-      content: {
-        type: DataTypes.STRING(500),
-        allowNull: false,
-      },
-      thumbnail: {
-        type: DataTypes.STRING(500),
-        allowNull: true,
-      },
-      category_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'category',
-          key: 'id',
-        },
-      },
-      user_id: {
+      portfolio_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         onDelete: 'CASCADE',
         references: {
-          model: 'user',
+          model: 'portfolio',
           key: 'id',
         },
       },
     },
     {
       sequelize,
-      tableName: 'tutorial',
+      tableName: 'portfolioImage',
       timestamps: true,
       indexes: [
         {
@@ -51,14 +35,9 @@ module.exports = function (sequelize, DataTypes) {
           fields: [{ name: 'id' }],
         },
         {
-          name: 'fk_Tutorial_Category',
+          name: 'fk_Image_Portfolio1',
           using: 'BTREE',
-          fields: [{ name: 'category_id' }],
-        },
-        {
-          name: 'fk_Tutorial_User1',
-          using: 'BTREE',
-          fields: [{ name: 'user_id' }],
+          fields: [{ name: 'portfolio_id' }],
         },
       ],
     },
