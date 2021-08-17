@@ -4,6 +4,10 @@ export const readByEmail = async (email) => {
   return await user.findOne({ where: { email } });
 };
 
+export const readById = async (id) => {
+  return await user.findByPk(id);
+};
+
 export const create = async (userData) => {
   return await user.create(userData);
 };
