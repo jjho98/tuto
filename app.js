@@ -7,9 +7,6 @@ import logger from './logger';
 import routes from './routes';
 import jwtVerify from './routes/middlewares/jwtVerify';
 import { sequelize } from './models';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 // db connect
 sequelize
