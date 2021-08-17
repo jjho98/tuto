@@ -44,7 +44,7 @@ export const join = async (req, res, next) => {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       httpOnly: true,
     });
-    return res.status(201).json({ message: '회원가입 성공' });
+    return res.status(204).json({ message: '회원가입 성공' });
   } catch (err) {
     next(err);
   }
@@ -82,8 +82,18 @@ export const login = async (req, res, next) => {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       httpOnly: true,
     });
-    return res.status(200).json({ message: '로그인 성공' });
+    return res.status(204).json({ message: '로그인 성공' });
   } catch (err) {
     next(err);
   }
+};
+
+export const logout = async (req, res, next) => {
+  // 로그인 되어있는지 체크
+  if (res.locals.user) {
+    res.cookie('access_token', '');
+    return res.status(204).json({ message: '로그아웃 성공' });
+  }
+  // 로그인 안되어 있을 시
+  return res.status(400).json({ message: '로그인 먼저 해주세요' });
 };
