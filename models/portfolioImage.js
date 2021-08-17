@@ -28,7 +28,7 @@ module.exports = function (sequelize, DataTypes) {
       tableName: 'portfolioImage',
       timestamps: true,
       chartset: 'utf8mb4',
-      collate: 'utf8mb4_general_ci',
+      collate: 'utf8mb4_unicode_ci',
       indexes: [
         {
           name: 'PRIMARY',
