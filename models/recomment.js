@@ -25,6 +25,8 @@ module.exports = function (sequelize, DataTypes) {
       user_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        chartset: 'utf8mb4',
+        collate: 'utf8mb4_general_ci',
         onDelete: 'CASCADE',
         references: {
           model: 'user',

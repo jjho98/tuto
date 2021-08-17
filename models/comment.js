@@ -36,6 +36,8 @@ module.exports = function (sequelize, DataTypes) {
       sequelize,
       tableName: 'comment',
       timestamps: true,
+      chartset: 'utf8mb4',
+      collate: 'utf8mb4_general_ci',
       indexes: [
         {
           name: 'PRIMARY',
