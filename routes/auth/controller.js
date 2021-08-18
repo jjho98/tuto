@@ -40,11 +40,8 @@ export const join = async (req, res, next) => {
 
     // 토큰 발행
     const token = await issueToken(user.id);
-    res.cookie('access_token', token, {
-      maxAge: 1000 * 60 * 60 * 24 * 7,
-      httpOnly: true,
-    });
-    return res.status(204).json({ message: '회원가입 성공' });
+
+    return res.status(204).json({ message: '회원가입 성공', token });
   } catch (err) {
     next(err);
   }
@@ -78,11 +75,8 @@ export const login = async (req, res, next) => {
     // 유저 데이터 일치 시
     // 토큰 발행
     const token = await issueToken(user.id);
-    res.cookie('access_token', token, {
-      maxAge: 1000 * 60 * 60 * 24 * 7,
-      httpOnly: true,
-    });
-    return res.status(204).json({ message: '로그인 성공' });
+
+    return res.status(204).json({ message: '로그인 성공', token });
   } catch (err) {
     next(err);
   }
