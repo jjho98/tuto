@@ -6,7 +6,7 @@ const jwtVerify = async (req, res, next) => {
   // jwt를 가지고 있는가?
   if (!token) {
     console.log('not loggedin user');
-    return res.status(401).json({ message: '로그인 해주세요' });
+    return next();
   }
   // jwt가 조작되지 않았는가?
   try {
