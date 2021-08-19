@@ -53,7 +53,7 @@ export const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
-      return req
+      return res
         .status(400)
         .json({ message: '이메일과 비밀번호를 입력하세요' });
     }
