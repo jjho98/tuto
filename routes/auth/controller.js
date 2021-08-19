@@ -40,7 +40,7 @@ export const join = async (req, res, next) => {
       email,
       password: hashedPassword,
       nickname,
-      thumbnail: req.file.location,
+      thumbnail: req.file ? req.file.location : '',
     });
 
     // 토큰 발행
