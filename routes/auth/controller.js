@@ -8,8 +8,8 @@ export const join = async (req, res, next) => {
   try {
     // 필드별 필요한 제약 추가하기
     // 이메일, 패스워드, 닉네임, 썸네일 중에 작성 안 된 게 있을 시
-    const { email, password, nickname, thumbnail } = req.body;
-    if (!email || !password || !nickname || !thumbnail) {
+    const { email, password, nickname } = req.body;
+    if (!email || !password || !nickname) {
       return res.status(400).json({
         message: '이메일, 비밀번호, 닉네임, 썸네일은 필수 항목입니다',
       });
@@ -35,8 +35,13 @@ export const join = async (req, res, next) => {
     }
 
     // 비밀번호 암호화해서 저장
-    req.body.password = await bcrypt.hash(password, 10);
-    const user = await userController.create(req.body);
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await userController.create({
+      email,
+      password: hashedPassword,
+      nickname,
+      thumbnail: req.file.location,
+    });
 
     // 토큰 발행
     const token = await issueToken(user.id);
