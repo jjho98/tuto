@@ -68,7 +68,7 @@ export const login = async (req, res, next) => {
     if (!user) {
       return res
         .status(401)
-        .json({ messsage: '해당 이메일로 가입된 계정은 없습니다' });
+        .json({ message: '해당 이메일로 가입된 계정은 없습니다' });
     }
 
     const isCorrect = await bcrypt.compare(password, user.password);
