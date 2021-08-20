@@ -7,11 +7,11 @@ import issueToken from '../../lib/issueToken';
 export const join = async (req, res, next) => {
   try {
     // 필드별 필요한 제약 추가하기
-    // 이메일, 패스워드, 닉네임, 썸네일 중에 작성 안 된 게 있을 시
+    // 이메일, 패스워드, 닉네임 중에 작성 안 된 게 있을 시
     const { email, password, nickname } = req.body;
     if (!email || !password || !nickname) {
       return res.status(400).json({
-        message: '이메일, 비밀번호, 닉네임, 썸네일은 필수 항목입니다',
+        message: '이메일, 비밀번호, 닉네임은 필수 항목입니다',
       });
     }
 
@@ -46,7 +46,7 @@ export const join = async (req, res, next) => {
     // 토큰 발행
     const token = await issueToken(user.id);
 
-    return res.status(204).json({ message: '회원가입 성공', token });
+    return res.status(200).json({ message: '회원가입 성공', token });
   } catch (err) {
     next(err);
   }
@@ -81,18 +81,19 @@ export const login = async (req, res, next) => {
     // 토큰 발행
     const token = await issueToken(user.id);
 
-    return res.status(204).json({ message: '로그인 성공', token });
+    return res.status(200).json({ message: '로그인 성공', token });
   } catch (err) {
     next(err);
   }
 };
 
-export const logout = async (req, res, next) => {
-  // 로그인 되어있는지 체크
-  if (res.locals.user) {
-    res.cookie('access_token', '');
-    return res.status(204).json({ message: '로그아웃 성공' });
-  }
-  // 로그인 안되어 있을 시
-  return res.status(400).json({ message: '로그인 먼저 해주세요' });
-};
+// 로그아웃 (토큰이 클라이언트에게 있으므로 서버에서 불가)
+// export const logout = async (req, res, next) => {
+//   // 로그인 되어있는지 체크
+//   if (res.locals.user) {
+//     res.cookie('access_token', '');
+//     return res.status(204).json({ message: '로그아웃 성공' });
+//   }
+//   // 로그인 안되어 있을 시
+//   return res.status(400).json({ message: '로그인 먼저 해주세요' });
+// };

@@ -2,6 +2,8 @@ import { Router } from 'express';
 import tutorials from './tutorials';
 import categories from './categories';
 import auth from './auth';
+import jwtVerify from './middlewares/jwtVerify';
+
 const router = new Router();
 
 /* GET home page. */
@@ -10,6 +12,9 @@ router.get('/', function (req, res, next) {
 });
 
 router.use('/auth', auth);
+
+// 인증 로직 외에는 로그인 필요
+router.use(jwtVerify);
 router.use('/tutorials', tutorials);
 router.use('/categories', categories);
 

@@ -2,11 +2,19 @@ import jwt from 'jsonwebtoken';
 import createError from 'http-errors';
 
 const jwtVerify = async (req, res, next) => {
-  const token = req.cookies.access_token;
+  let token = '';
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.split(' ')[0] === 'Bearer'
+  ) {
+    token = req.headers.authorization.split(' ')[1];
+    console.log(req.headers.authorization);
+  }
+  console.log(req.headers);
   // jwt를 가지고 있는가?
   if (!token) {
     console.log('not loggedin user');
-    return next();
+    return res.status(401).json({ message: '로그인이 필요합니다' });
   }
   // jwt가 조작되지 않았는가?
   try {

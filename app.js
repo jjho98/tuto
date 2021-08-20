@@ -5,7 +5,6 @@ const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 import logger from './logger';
 import routes from './routes';
-import jwtVerify from './routes/middlewares/jwtVerify';
 import { sequelize } from './models';
 
 // db connect
@@ -30,7 +29,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(jwtVerify);
 app.use('/api', routes);
 
 // catch 404 and forward to error handler
