@@ -29,3 +29,14 @@ export const verifyNickname = async (nickname) => {
   });
   return !!count;
 };
+
+export const getMyInfo = async (req, res, next) => {
+  try {
+    const me = await user.findByPk(res.locals.user.id);
+    // 비밀번호는 삭제 후 전달
+    delete me.password;
+    res.status(200).json(me);
+  } catch (err) {
+    next(err);
+  }
+};

@@ -1,2 +1,7 @@
 import { Router } from 'express';
-import * as authController from './controller';
+import * as userController from './controller';
+
+const users = new Router();
+users.get('/me', userController.getMyInfo);
+
+export default users;
