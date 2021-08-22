@@ -3,6 +3,7 @@ import tutorials from './tutorials';
 import categories from './categories';
 import auth from './auth';
 import users from './users';
+import portfolios from './portfolios';
 import jwtVerify from './middlewares/jwtVerify';
 
 const router = new Router();
@@ -20,5 +21,6 @@ router.use(jwtVerify);
 router.use('/tutorials', tutorials);
 router.use('/categories', categories);
 router.use('/users', users);
+router.use('/portfolios', portfolios);
 
 export default router;
