@@ -1,4 +1,4 @@
-import { tutorial, category } from '../../models';
+import { tutorial, category, lecture } from '../../models';
 
 export const list = async (req, res, next) => {
   try {
@@ -17,6 +17,27 @@ export const list = async (req, res, next) => {
 
     const tutorials = await tutorial.findAll({ category });
     return res.status(200).json(tutorials);
+  } catch (err) {
+    next(err);
+  }
+};
+
+// ?page=x
+export const getMyTutorials = async (req, res, next) => {
+  try {
+    const { page } = req.query;
+    const result = await tutorial.findAndCountAll({
+      where: {
+        user_id: res.locals.user.id,
+      },
+      offset: parseInt(page),
+      limit: 5,
+      include: {
+        model: lecture,
+        as: 'lectures',
+      },
+    });
+    return res.status(200).json(result);
   } catch (err) {
     next(err);
   }
