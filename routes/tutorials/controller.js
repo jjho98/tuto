@@ -42,3 +42,23 @@ export const getMyTutorials = async (req, res, next) => {
     next(err);
   }
 };
+
+export const create = async (req, res, next) => {
+  try {
+    const { title, content, category_id } = req.body;
+
+    await tutorial.create({
+      title,
+      content,
+      category_id,
+      user_id: res.locals.user.id,
+      thumbnail: req.file
+        ? req.file.location
+        : 'https://tuto-bucket.s3.ap-northeast-2.amazonaws.com/tutorial-null.png',
+    });
+
+    return res.status(204);
+  } catch (err) {
+    next(err);
+  }
+};
