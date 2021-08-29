@@ -57,7 +57,7 @@ export const create = async (req, res, next) => {
         : 'https://tuto-bucket.s3.ap-northeast-2.amazonaws.com/tutorial-null.png',
     });
 
-    return res.status(204);
+    return res.status(200).json({ messgae: '정상적으로 생성됐습니다' });
   } catch (err) {
     next(err);
   }
