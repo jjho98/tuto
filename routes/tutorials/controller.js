@@ -35,7 +35,7 @@ export const list = async (req, res, next) => {
       where: {
         category_id: categoryId,
       },
-      offset: parseInt(page),
+      offset: parseInt(page) * 10,
       limit: 10,
       attributes: [
         'id',
