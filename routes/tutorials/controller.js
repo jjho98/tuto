@@ -38,6 +38,7 @@ export const list = async (req, res, next) => {
       offset: parseInt(page),
       limit: 10,
       attributes: [
+        'id',
         'title',
         'thumbnail',
         [sequelize.fn('COUNT', 'lectures.id'), 'lectureCount'],
