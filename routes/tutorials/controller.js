@@ -31,7 +31,7 @@ export const list = async (req, res, next) => {
     const categoryId = result.dataValues.id;
 
     // 정상적이면 해당 카테고리의 튜토리얼 조금씩 보내주기
-    const tutorials = await tutorial.findAll({
+    const tutorials = await tutorial.findAndCountAll({
       where: {
         category_id: categoryId,
       },
