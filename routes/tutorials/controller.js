@@ -46,6 +46,9 @@ export const getMyTutorials = async (req, res, next) => {
 export const create = async (req, res, next) => {
   try {
     const { title, content, category_id } = req.body;
+    if (!title || !content || !category_id) {
+      return res.status(400).json({ message: '작성되지 않은 항목이 있습니다' });
+    }
 
     await tutorial.create({
       title,
