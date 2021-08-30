@@ -1,21 +1,76 @@
-import { tutorial, category, lecture } from '../../models';
+import {
+  tutorial,
+  category,
+  lecture,
+  user,
+  taking,
+  sequelize,
+} from '../../models';
 
+// ?page=x 10개씩
 export const list = async (req, res, next) => {
   try {
     const { category: wantedCategory } = req.params;
+    // 숫자로 변환
+    const page = req.query.page ? +req.query.page : 0;
+
     // params로 받은 카테고리가 존재하지 않으면 잘못된 요청
-    const doesExist = await category.count({
+    // category의 id 찾기
+    const result = await category.findOne({
       where: {
         engName: wantedCategory,
       },
+      attributes: ['id'],
     });
-    if (!doesExist) {
+    if (!result) {
       return res
         .status(400)
         .json({ message: '해당 카테고리는 존재하지 않습니다' });
     }
 
-    const tutorials = await tutorial.findAll({ category });
+    const categoryId = result.dataValues.id;
+
+    // 정상적이면 해당 카테고리의 튜토리얼 조금씩 보내주기
+    const tutorials = await tutorial.findAndCountAll({
+      where: {
+        category_id: categoryId,
+      },
+      offset: parseInt(page),
+      limit: 10,
+      attributes: [
+        'title',
+        'thumbnail',
+        [sequelize.fn('COUNT', 'lectures.id'), 'lectureCount'],
+        [sequelize.fn('COUNT', 'takings.id'), 'takingCount'],
+      ],
+      include: [
+        {
+          model: user,
+          as: 'user',
+          attributes: ['thumbnail', 'nickname'],
+        },
+        {
+          model: lecture,
+          as: 'lectures',
+          attributes: [],
+        },
+        {
+          model: taking,
+          as: 'takings',
+          attributes: [],
+        },
+      ],
+      // group: [sequelize.col('tutorial.id')],
+    });
+
+    // count가 0이면 []로 오게 됨. 변환 필요
+    // if (Array.isArray(tutorials.lectures)) {
+    //   tutorials.lectures.lectureCount = 0;
+    // }
+    // if (Array.isArray(tutorials.taking)) {
+    //   tutorials.taking.takingCount = 0;
+    // }
+
     return res.status(200).json(tutorials);
   } catch (err) {
     next(err);
@@ -30,7 +85,7 @@ export const getMyTutorials = async (req, res, next) => {
       where: {
         user_id: res.locals.user.id,
       },
-      offset: parseInt(page),
+      offset: page,
       limit: 5,
       include: {
         model: lecture,
@@ -43,6 +98,7 @@ export const getMyTutorials = async (req, res, next) => {
   }
 };
 
+// 튜토리얼 생성
 export const create = async (req, res, next) => {
   try {
     const { title, content, category_id } = req.body;
