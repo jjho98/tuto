@@ -86,7 +86,7 @@ export const getMyTutorials = async (req, res, next) => {
       where: {
         user_id: res.locals.user.id,
       },
-      offset: page,
+      offset: parseInt(page),
       limit: 5,
       include: {
         model: lecture,
@@ -118,6 +118,19 @@ export const create = async (req, res, next) => {
     });
 
     return res.status(200).json({ messgae: '정상적으로 생성됐습니다' });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// 튜토리얼 자세히 보기
+export const getDetail = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const result = await tutorial.findOne({
+      where: { id },
+    });
+    console.log(result.dataValues);
   } catch (err) {
     next(err);
   }
