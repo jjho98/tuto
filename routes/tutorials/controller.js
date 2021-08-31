@@ -4,6 +4,8 @@ import {
   lecture,
   user,
   taking,
+  portfolio,
+  portfolioImage,
   sequelize,
 } from '../../models';
 
@@ -64,21 +66,13 @@ export const list = async (req, res, next) => {
       group: ['id'],
     });
 
-    // count가 0이면 []로 오게 됨. 변환 필요
-    // if (Array.isArray(tutorials.lectures)) {
-    //   tutorials.lectures.lectureCount = 0;
-    // }
-    // if (Array.isArray(tutorials.taking)) {
-    //   tutorials.taking.takingCount = 0;
-    // }
-
     return res.status(200).json(tutorials);
   } catch (err) {
     next(err);
   }
 };
 
-// ?page=x
+// ?page=x 10개씩
 export const getMyTutorials = async (req, res, next) => {
   try {
     const { page } = req.query;
@@ -86,12 +80,33 @@ export const getMyTutorials = async (req, res, next) => {
       where: {
         user_id: res.locals.user.id,
       },
-      offset: parseInt(page),
-      limit: 5,
-      include: {
-        model: lecture,
-        as: 'lectures',
-      },
+      offset: parseInt(page) * 10,
+      limit: 10,
+      attributes: [
+        'id',
+        'title',
+        'thumbnail',
+        [sequelize.fn('COUNT', 'lectures.id'), 'lectureCount'],
+        [sequelize.fn('COUNT', 'takings.id'), 'takingCount'],
+      ],
+      include: [
+        {
+          model: user,
+          as: 'user',
+          attributes: ['thumbnail', 'nickname'],
+        },
+        {
+          model: lecture,
+          as: 'lectures',
+          attributes: [],
+        },
+        {
+          model: taking,
+          as: 'takings',
+          attributes: [],
+        },
+      ],
+      group: ['id'],
     });
     return res.status(200).json(result);
   } catch (err) {
