@@ -144,8 +144,31 @@ export const getDetail = async (req, res, next) => {
   try {
     const result = await tutorial.findOne({
       where: { id },
+      include: [
+        {
+          model: user,
+          as: 'user',
+          attributes: ['thumbnail', 'nickname'],
+        },
+        {
+          model: lecture,
+          as: 'lectures',
+          attributes: ['embed', 'title', 'createdAt'],
+          include: {
+            model: portfolio,
+            as: 'portfolios',
+            attributes: ['id'],
+            include: {
+              model: portfolioImage,
+              as: 'portfolioImages',
+              attributes: ['uri'],
+              count: 5,
+            },
+          },
+        },
+      ],
     });
-    console.log(result.dataValues);
+    return res.status(200).json(result);
   } catch (err) {
     next(err);
   }
